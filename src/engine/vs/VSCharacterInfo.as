@@ -17,11 +17,16 @@ package engine.vs
 			background = 0;
 		}
 		
-		public function copy(source:VSCharacterInfo)
+		public function copy(source:VSCharacterInfo):void
 		{
 			character = source.character.substr(0, 1);
 			foreground = source.foreground;
 			background = source.background;
+		}
+		
+		public function toString():String
+		{
+			return "VSC[" + character +","+ foreground +","+ background+"]";
 		}
 	}
 
