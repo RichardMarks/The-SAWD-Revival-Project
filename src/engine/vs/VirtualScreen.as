@@ -62,7 +62,7 @@ package engine.vs
 		
 		public function PutChar(c:String):void
 		{
-			trace("PutChar",c,myCaret);
+			//trace("PutChar",c,myCaret);
 			var index:int = int(myCaret.x + (myCaret.y * myColumns));
 			var cell:VSCharacterInfo = myBuffer[index];
 			
@@ -70,7 +70,7 @@ package engine.vs
 			cell.background = myBackgroundColor;
 			cell.foreground = myForegroundColor;
 			
-			trace(cell, myBuffer[index]);
+			//trace(cell, myBuffer[index]);
 			
 			myCaret.x++;
 			if (myCaret.x >= myColumns)
@@ -187,8 +187,6 @@ package engine.vs
 		public function Display():void
 		{
 			var 
-			x:int = 0,
-			y:int = 0,
 			x2:int = 0,
 			y2:int = 0,
 			y3:int = 0,
@@ -199,22 +197,21 @@ package engine.vs
 			srcRect:Rectangle = new Rectangle(0, 0, LETTER_WIDTH, LETTER_HEIGHT),
 			dstPt:Point = new Point,
 			cell:VSCharacterInfo,
-			w:int = myColumns - 1;
+			w:int = myColumns;
 			
-			for (y = 0; y < myRows; y++)
+			for (var y:int = 0; y < myRows; y++)
 			{
 				y2 = y * myColumns;
 				y3 = y * LETTER_HEIGHT;
 				bgRect.y = y3;
 				dstPt.y = y3;
-				for (x = 0; x < w; x++)
+				for (var x:int = 0; x < w; x++)
 				{
 					x2 = x * LETTER_WIDTH;
-					position = x * y2;
-					//position %= (mySize-1);
-					if (position >= mySize) { trace("somehow there was an overflow at xy",x,y);  break; }
+					position = x + y2;
+					
 					cell = myBuffer[position];
-					letter = int(cell.character.charCodeAt);
+					letter = int(cell.character.charCodeAt(0));
 					
 					bgRect.x = x2;
 					
@@ -226,9 +223,6 @@ package engine.vs
 					srcRect.x = myLetterCoordX[letter] + ox;
 					srcRect.y = myLetterCoordY[letter];
 					myRenderTarget.copyPixels(masterFontSurface, srcRect, dstPt);
-					
-					trace("blt chr:", cell.character, "pos",position, "letter",letter, "xy",x, y, "x2y2y3",x2, y2, y3, "bgrect",bgRect, "srcrect",srcRect, "dst",dstPt);
-					
 				}
 			}
 		}
