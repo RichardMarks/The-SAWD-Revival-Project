@@ -149,7 +149,7 @@ package engine.clib
 		
 		static private var openWindowList:Vector.<Window> = new Vector.<Window>();
 		
-		static public function ShowMessage(lines:Vector.<String>):void
+		static public function ShowMessage(lines:Vector.<String>, centerText:Boolean = false):void
 		{
 			if (screen == null) { throw new Error("CL.Initialize() not called"); }
 			
@@ -159,10 +159,23 @@ package engine.clib
 			var y:int = box[1] + 2;
 			openWindowList.unshift(OpenWindow(box[0], box[1], box[2], box[3]));
 			
-			for each(var line:String in lines)
+			var line:String;
+			if (centerText)
 			{
-				OutChars(x, y, line);
-				y++;
+				var wOver2:int = int(box[2] * 0.5) + 2;
+				for each(line in lines)
+				{
+					OutChars(wOver2 - int(line.length * 0.5), y, line);
+					y++;
+				}
+			}
+			else
+			{
+				for each(line in lines)
+				{
+					OutChars(x, y, line);
+					y++;
+				}
 			}
 			Render();
 			
@@ -196,7 +209,7 @@ package engine.clib
 		
 		static public function ShowMessageCentered(lines:Vector.<String>):void
 		{
-			
+			ShowMessage(lines, true);
 		}
 		
 		static public function ShowChoice(message:String):void

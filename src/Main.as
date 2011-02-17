@@ -49,7 +49,7 @@ package
 			lines.length = 0;
 			lines.push("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k");
 			
-			CL.ShowMessage(lines);
+			CL.ShowMessageCentered(lines);
 				
 			//var wnd:Window = CL.OpenWindow(2, 2, 45, 20, 4, 1 | 2 | 4 | 8);
 			
