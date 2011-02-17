@@ -36,12 +36,29 @@ package
 			buffer = new BitmapData(stage.stageWidth, stage.stageHeight, false, 0xFF000000);
 			addChild(new Bitmap(buffer, PixelSnapping.NEVER));
 			
-			CL.Initialize(buffer, 80, 50);
-			var wnd:Window = CL.OpenWindow(2, 2, 45, 20, 4, 1 | 2 | 4 | 8);
+			CL.Initialize(stage, buffer, 80, 50);
 			
-			CL.OpenWindow(14, 14, 45, 20, 1, 1 | 2 | 8);
+			var lines:Vector.<String> = new Vector.<String>();
+			lines.push("Hello World!","This is a test!","And another line that is longer than the rest. ");
+			CL.ShowMessage(lines);
+			lines.length = 0;
+			lines.push("This is a larger message",
+				"with more lines","so that we can test","the robustness","of the ShowMessage","CL function");
+			CL.ShowMessage(lines);
 			
-			CL.Render();
+			lines.length = 0;
+			lines.push("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k");
+			
+			CL.ShowMessage(lines);
+				
+			//var wnd:Window = CL.OpenWindow(2, 2, 45, 20, 4, 1 | 2 | 4 | 8);
+			
+			//CL.OpenWindow(14, 14, 45, 20, 1, 1 | 2 | 8);
+			
+			//CL.CloseWindow(wnd);
+			
+			
+			//CL.Render();
 			
 			/*
 			var screen:VirtualScreen = new VirtualScreen(buffer, 80, 50);

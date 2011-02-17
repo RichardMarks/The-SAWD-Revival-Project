@@ -3,6 +3,9 @@ package engine.clib
 	import engine.clib.Window;
 	import engine.vs.VirtualScreen;
 	import flash.display.BitmapData;
+	import flash.display.Stage;
+	import flash.events.KeyboardEvent;
+	import net.flashpunk.utils.Key;
 	/**
 	 * ...
 	 * @author Richard Marks
@@ -11,10 +14,12 @@ package engine.clib
 	{
 		// core
 		static private var screen:VirtualScreen;
+		static private var stage:Stage;
 		
 		// core functions
-		static public function Initialize(renderTarget:BitmapData, columns:int = 80, rows:int = 50):void
+		static public function Initialize(stage:Stage, renderTarget:BitmapData, columns:int = 80, rows:int = 50):void
 		{
+			CL.stage = stage;
 			screen = new VirtualScreen(renderTarget, columns, rows);
 		}
 		
@@ -69,7 +74,7 @@ package engine.clib
 		
 		// UI functions
 		
-		static public function OpenWindow(x:int, y:int, width:int, height:int, backColor:int, foreColor:int):Window
+		static public function OpenWindow(x:int, y:int, width:int, height:int, backColor:int = 4, foreColor:int = 15, frame:Boolean = true):Window
 		{
 			if (screen == null) { throw new Error("CL.Initialize() not called"); }
 			
@@ -91,6 +96,11 @@ package engine.clib
 				{
 					OutChar(x + cx, y + cy, " ");
 				}
+			}
+			
+			if (!frame)
+			{
+				return wnd;
 			}
 			
 			// draw top and bottom edge
@@ -119,17 +129,69 @@ package engine.clib
 		
 		static public function OpenWindowNoFrame(x:int, y:int, width:int, height:int, backColor:uint, foreColor:uint):Window
 		{
-			return null;
+			return OpenWindow(x, y, width, height, backColor, foreColor, false);
 		}
 		
 		static public function CloseWindow(window:Window):void
 		{
+			if (screen == null) { throw new Error("CL.Initialize() not called"); }
+			if (window == null)
+			{
+				throw new Error("CL Window must not be null");
+			}
 			
+			// restore to the screen the stored window buffer
+			window.CopyToVS(screen);
+			
+			// finished with the window
+			window = null;
 		}
+		
+		static private var openWindowList:Vector.<Window> = new Vector.<Window>();
 		
 		static public function ShowMessage(lines:Vector.<String>):void
 		{
+			if (screen == null) { throw new Error("CL.Initialize() not called"); }
 			
+			var box:Vector.<int> = new Vector.<int>();
+			box.push(5, 12 - int((lines.length + 4) * 0.5), 70, lines.length + 4);
+			var x:int = box[0] + 2;
+			var y:int = box[1] + 2;
+			openWindowList.unshift(OpenWindow(box[0], box[1], box[2], box[3]));
+			
+			for each(var line:String in lines)
+			{
+				OutChars(x, y, line);
+				y++;
+			}
+			Render();
+			
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, ShowMessageKeyHandler, false, int.MAX_VALUE);
+		}
+		
+		static private function ShowMessageKeyHandler(e:KeyboardEvent):void
+		{
+			if (
+				(e.keyCode == Key.BACKSPACE) ||
+				(e.keyCode == Key.SPACE) ||
+				(e.keyCode == Key.ENTER) ||
+				(e.keyCode == Key.ESCAPE)
+				)
+				{
+					if (openWindowList.length == 0)
+					{
+						throw new Error("no open windows to be closed! - a definite logic bug");
+					}
+					var wnd:Window = openWindowList.shift();
+					CloseWindow(wnd);
+					Render();
+					
+					// last window, remove the listener
+					if (openWindowList.length == 0)
+					{
+						stage.removeEventListener(KeyboardEvent.KEY_DOWN, ShowMessageKeyHandler);
+					}
+				}
 		}
 		
 		static public function ShowMessageCentered(lines:Vector.<String>):void

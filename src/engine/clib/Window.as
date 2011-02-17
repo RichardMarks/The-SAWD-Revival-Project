@@ -65,6 +65,24 @@ package engine.clib
 			
 		}
 		
+		public function CopyToVS(vs:VirtualScreen):void
+		{
+			if (vs == null) { throw new Error("source VirtualScreen cannot be null"); }
+			
+			var w:int = myRect.width;
+			var h:int = myRect.height;
+			
+			for (var y:int = 0; y < h; y++)
+			{
+				for (var x:int = 0; x < w; x++)
+				{
+					var s:VSCharacterInfo = myBuffer[x + (y * w)];
+					var d:VSCharacterInfo = vs.GetCell(myRect.x + x, myRect.y + y);
+					d.copy(s);
+				}
+			}
+		}
+		
 	}
 
 }
