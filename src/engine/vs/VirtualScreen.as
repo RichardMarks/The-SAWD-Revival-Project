@@ -41,7 +41,7 @@ package engine.vs
 			mySize = columns * rows;
 			myColumns = columns;
 			myRows = rows;
-			myBuffer = new Vector.<VSCharacterInfo>(length);
+			myBuffer = new Vector.<VSCharacterInfo>(mySize);
 			for (var i:int = 0; i < mySize; i++)
 			{
 				myBuffer[i] = new VSCharacterInfo;
@@ -162,6 +162,13 @@ package engine.vs
 		}
 		
 		public function get Buffer():Vector.<VSCharacterInfo> { return myBuffer; }
+		public function get Columns():int { return myColumns; }
+		public function get Rows():int { return myRows; }
+		
+		public function GetCell(x:int, y:int):VSCharacterInfo
+		{
+			return myBuffer[x + (y * myColumns)];
+		}
 		
 		public function get ForegroundColor():int { return myForegroundColor; }
 		public function get BackgroundColor():int { return myBackgroundColor; }

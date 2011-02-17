@@ -1,5 +1,7 @@
 package 
 {
+	import engine.clib.CL;
+	import engine.clib.Window;
 	import engine.vs.VirtualScreen;
 	import engine.vs.VSColorAttribute;
 	import flash.display.Bitmap;
@@ -34,6 +36,14 @@ package
 			buffer = new BitmapData(stage.stageWidth, stage.stageHeight, false, 0xFF000000);
 			addChild(new Bitmap(buffer, PixelSnapping.NEVER));
 			
+			CL.Initialize(buffer, 80, 50);
+			var wnd:Window = CL.OpenWindow(2, 2, 45, 20, 4, 1 | 2 | 4 | 8);
+			
+			CL.OpenWindow(14, 14, 45, 20, 1, 1 | 2 | 8);
+			
+			CL.Render();
+			
+			/*
 			var screen:VirtualScreen = new VirtualScreen(buffer, 80, 50);
 			
 			screen.BackgroundColor = 4;
@@ -70,7 +80,7 @@ package
 			var bench:int = end - start;
 			
 			trace("Display 80x50 renders in", bench + "ms");
-			
+			*/
 			
 			//buffer.copyPixels(VirtualScreen.masterFontSurface, new Rectangle(200,0,8,8), new Point);
 			
