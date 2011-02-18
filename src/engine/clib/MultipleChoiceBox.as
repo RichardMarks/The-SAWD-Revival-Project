@@ -1,6 +1,9 @@
 package engine.clib 
 {
 	import engine.vs.VirtualScreen;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import net.flashpunk.utils.Key;
@@ -10,10 +13,7 @@ package engine.clib
 	 */
 	public class MultipleChoiceBox 
 	{
-		static public function Show(vs:VirtualScreen, choices:Vector.<String>):MultipleChoiceBox
-		{
-			return null;
-		}
+		static public const FINISHED:String = "mcb::finished";
 		
 		private var myVS:VirtualScreen;
 		private var myChoice:int;
@@ -26,12 +26,18 @@ package engine.clib
 		private var myOptionsPos:Point = new Point;
 		private var myPos:Point = new Point;
 		
+		private var keyHandlerNeededOverride:Boolean = false;
+		
+		
+		public function get Choice():int { return myChoice; }
+		
 		public function MultipleChoiceBox(vs:VirtualScreen, message:String, choices:Vector.<String>) 
 		{
 			myVS = vs;
 			myChoice = 0;
 			myChoices = choices;
 			myMessage = message;
+			
 		}
 		
 		public function Open():void
@@ -48,10 +54,10 @@ package engine.clib
 			myCursor.y = 0;
 			myCursor.x = 0;
 			
-			myOpenWindowList.unshift(CL.OpenWindow(box[0], box[1], box[2], box[3]));
-			myOpenWindowList.unshift(CL.OpenWindow(box[0], box[1] - 2, box[2], 3));
+			myOpenWindowList.unshift(CL.OpenWindow(box[0], box[1], box[2], box[3], 1));
+			myOpenWindowList.unshift(CL.OpenWindow(box[0], box[1] - 2, box[2], 3, 1));
 			
-			CL.OutChars(myMessagePos.x, myPos.y - 5, myMessage);
+			CL.OutChars(myMessagePos.x, myPos.y - 3, myMessage);
 			for each(var choice:String in myChoices)
 			{
 				CL.OutChars(myPos.x + 2, myPos.y + myOptionsPos.y, choice);
@@ -59,12 +65,18 @@ package engine.clib
 			}
 			myPos.y -= myChoices.length;
 			RefreshDisplay();
+			
+			if (CL.KeyHandlerIsLocked())
+			{
+				CL.UnlockKeyHandler();
+				keyHandlerNeededOverride = true;
+			}
 			CL.stage.addEventListener(KeyboardEvent.KEY_DOWN, KeyHandler, false, int.MAX_VALUE, false);
 		}
 		
 		private function KeyHandler(e:KeyboardEvent):void
 		{
-			trace("MultipleChoiceBox::KeyHandler()");
+			//trace("MultipleChoiceBox::KeyHandler()");
 			if (e.keyCode == Key.SPACE || e.keyCode == Key.ENTER)
 			{
 				myChoice = myCursor.y + 1;
@@ -74,6 +86,12 @@ package engine.clib
 				}
 				CL.Render();
 				CL.stage.removeEventListener(KeyboardEvent.KEY_DOWN, KeyHandler);
+				if (keyHandlerNeededOverride)
+				{
+					CL.LockKeyHandler();
+					keyHandlerNeededOverride = false;
+				}
+				CL.stage.dispatchEvent(new Event(FINISHED));
 			}
 			else if (e.keyCode == Key.UP)
 			{

@@ -53,63 +53,13 @@ package
 			CL.ShowMessageCentered(lines);
 			
 			lines.length = 0;
-			lines.push("  Yes", "  No");
+			lines.push("  Yes", "  No", "  Maybe", "  Perhaps");
 			var yesNoBox:MultipleChoiceBox = new MultipleChoiceBox(CL.screen, "Choose", lines);
 			yesNoBox.Open();
-			
-			//var wnd:Window = CL.OpenWindow(2, 2, 45, 20, 4, 1 | 2 | 4 | 8);
-			
-			//CL.OpenWindow(14, 14, 45, 20, 1, 1 | 2 | 8);
-			
-			//CL.CloseWindow(wnd);
-			
-			
-			//CL.Render();
-			
-			/*
-			var screen:VirtualScreen = new VirtualScreen(buffer, 80, 50);
-			
-			screen.BackgroundColor = 4;
-			screen.Clear();
-			
-			for (var bgc:int = 0; bgc < 16; bgc++)
+			stage.addEventListener(MultipleChoiceBox.FINISHED, function(e:Event):void 
 			{
-				screen.BackgroundColor = bgc;
-				for (var fgc:int = 0; fgc < 16; fgc++)
-				{
-					screen.ForegroundColor = fgc;
-					for (var c:int = 0; c < 256; c++)
-					{
-						screen.PutChar(String.fromCharCode(c));
-					}
-				}
-			}
-			
-			screen.ForegroundColor = 1 | 2 | 4 | 8;
-			
-			screen.SetXY(10, 10);
-			screen.Puts("Hello, World!");
-			
-			screen.BackgroundColor = 1 | 8;
-			screen.ForegroundColor = 1 | 2 | 4;
-			screen.Puts("Testing Red");
-			
-			var start:int = getTimer();
-			
-			screen.Display();
-			
-			var end:int = getTimer();
-			
-			var bench:int = end - start;
-			
-			trace("Display 80x50 renders in", bench + "ms");
-			*/
-			
-			//buffer.copyPixels(VirtualScreen.masterFontSurface, new Rectangle(200,0,8,8), new Point);
-			
-			//buffer.copyPixels(VirtualScreen.masterFontSurface, VirtualScreen.masterFontSurface.rect, new Point);
-			
-			//addEventListener(Event.ENTER_FRAME, MainLoop);
+				trace("Choice made: ", yesNoBox.Choice);
+			} );
 		}
 		
 		private var bltp:Point = new Point(0, 0);

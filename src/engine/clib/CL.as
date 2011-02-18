@@ -179,12 +179,26 @@ package engine.clib
 			}
 			Render();
 			
+			LockKeyHandler();
+		}
+		
+		static private var keyHandlerLocked:Boolean = false;
+		static public function KeyHandlerIsLocked():Boolean { return keyHandlerLocked; }
+		static public function LockKeyHandler():void
+		{
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, ShowMessageKeyHandler, false, int.MAX_VALUE);
+			keyHandlerLocked = true;
+		}
+		
+		static public function UnlockKeyHandler():void
+		{
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, ShowMessageKeyHandler);
+			keyHandlerLocked = false;
 		}
 		
 		static private function ShowMessageKeyHandler(e:KeyboardEvent):void
 		{
-			trace("ShowMessageKeyHandler()");
+			//trace("ShowMessageKeyHandler()");
 			if (
 				(e.keyCode == Key.BACKSPACE) ||
 				(e.keyCode == Key.SPACE) ||
@@ -203,7 +217,7 @@ package engine.clib
 					// last window, remove the listener
 					if (openWindowList.length == 0)
 					{
-						stage.removeEventListener(KeyboardEvent.KEY_DOWN, ShowMessageKeyHandler);
+						UnlockKeyHandler();
 					}
 				}
 		}
