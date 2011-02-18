@@ -13,8 +13,8 @@ package engine.clib
 	public class CL 
 	{
 		// core
-		static private var screen:VirtualScreen;
-		static private var stage:Stage;
+		static public var screen:VirtualScreen;
+		static public var stage:Stage;
 		
 		// core functions
 		static public function Initialize(stage:Stage, renderTarget:BitmapData, columns:int = 80, rows:int = 50):void
@@ -184,6 +184,7 @@ package engine.clib
 		
 		static private function ShowMessageKeyHandler(e:KeyboardEvent):void
 		{
+			trace("ShowMessageKeyHandler()");
 			if (
 				(e.keyCode == Key.BACKSPACE) ||
 				(e.keyCode == Key.SPACE) ||

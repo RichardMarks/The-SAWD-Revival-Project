@@ -1,6 +1,7 @@
 package 
 {
 	import engine.clib.CL;
+	import engine.clib.MultipleChoiceBox;
 	import engine.clib.Window;
 	import engine.vs.VirtualScreen;
 	import engine.vs.VSColorAttribute;
@@ -50,7 +51,12 @@ package
 			lines.push("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k");
 			
 			CL.ShowMessageCentered(lines);
-				
+			
+			lines.length = 0;
+			lines.push("  Yes", "  No");
+			var yesNoBox:MultipleChoiceBox = new MultipleChoiceBox(CL.screen, "Choose", lines);
+			yesNoBox.Open();
+			
 			//var wnd:Window = CL.OpenWindow(2, 2, 45, 20, 4, 1 | 2 | 4 | 8);
 			
 			//CL.OpenWindow(14, 14, 45, 20, 1, 1 | 2 | 8);
