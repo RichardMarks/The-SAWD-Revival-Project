@@ -39,6 +39,12 @@ package
 			
 			CL.Initialize(stage, buffer, 80, 50);
 			
+			
+			
+			
+			
+			
+			/*
 			var lines:Vector.<String> = new Vector.<String>();
 			lines.push("Hello World!","This is a test!","And another line that is longer than the rest. ");
 			CL.ShowMessage(lines);
@@ -51,6 +57,8 @@ package
 			lines.push("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k");
 			
 			CL.ShowMessageCentered(lines);
+			*/
+			
 			/*
 			lines.length = 0;
 			lines.push("  Yes", "  No", "  Maybe", "  Perhaps");
@@ -62,7 +70,7 @@ package
 			} );
 			*/
 			
-			trace("CL.ShowChoice =",CL.ShowChoice("Want to save?"));
+			//trace("CL.ShowChoice =",CL.ShowChoice("Want to save?"));
 			
 		}
 	}
