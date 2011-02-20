@@ -3,6 +3,7 @@ package
 	import engine.clib.CL;
 	import engine.clib.MultipleChoiceBox;
 	import engine.clib.Window;
+	import engine.scripting.SAWDScriptEngine;
 	import engine.vs.VirtualScreen;
 	import engine.vs.VSColorAttribute;
 	import flash.display.Bitmap;
@@ -12,6 +13,7 @@ package
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 
 	/**
@@ -21,6 +23,9 @@ package
 	[Frame(factoryClass="Preloader")]
 	public class Main extends Sprite 
 	{
+		[Embed(source = '../assets/scripts/Scene1.mls', mimeType = 'application/octet-stream')]
+		private const SCENE_MLS:Class;
+		
 		private var buffer:BitmapData;
 		
 		public function Main():void 
@@ -40,6 +45,10 @@ package
 			CL.Initialize(stage, buffer, 80, 50);
 			
 			
+			var scriptEngine:SAWDScriptEngine = new SAWDScriptEngine;
+			var scriptBytes:ByteArray = new SCENE_MLS;
+			trace(scriptBytes);
+			scriptEngine.Execute(scriptBytes);
 			
 			
 			

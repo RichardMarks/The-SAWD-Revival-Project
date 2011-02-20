@@ -21,6 +21,8 @@ package engine.scripting
 		private var myPreviousNode:Script;
 		private var myNextNode:Script;
 		
+		public function set Prev(value:Script):void { myPreviousNode = value; }
+		public function set Next(value:Script):void { myNextNode = value; }
 		public function get Prev():Script { return myPreviousNode; }
 		public function get Next():Script { return myNextNode; }
 		
