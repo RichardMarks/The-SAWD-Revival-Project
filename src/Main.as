@@ -51,7 +51,7 @@ package
 			lines.push("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k");
 			
 			CL.ShowMessageCentered(lines);
-			
+			/*
 			lines.length = 0;
 			lines.push("  Yes", "  No", "  Maybe", "  Perhaps");
 			var yesNoBox:MultipleChoiceBox = new MultipleChoiceBox(CL.screen, "Choose", lines);
@@ -60,19 +60,10 @@ package
 			{
 				trace("Choice made: ", yesNoBox.Choice);
 			} );
-		}
-		
-		private var bltp:Point = new Point(0, 0);
-		private function MainLoop(e:Event):void
-		{
-			buffer.fillRect(buffer.rect, 0x00000000);
-			buffer.copyPixels(VirtualScreen.masterFontSurface, VirtualScreen.masterFontSurface.rect, bltp);
-			bltp.x -= 2;
-			trace("x", -bltp.x);
-			if (bltp.x < -VirtualScreen.masterFontSurface.width)
-			{
-				bltp.x = 0;
-			}
+			*/
+			
+			trace("CL.ShowChoice =",CL.ShowChoice("Want to save?"));
+			
 		}
 	}
 

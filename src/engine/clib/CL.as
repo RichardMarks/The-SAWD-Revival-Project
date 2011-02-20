@@ -4,6 +4,7 @@ package engine.clib
 	import engine.vs.VirtualScreen;
 	import flash.display.BitmapData;
 	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import net.flashpunk.utils.Key;
 	/**
@@ -227,19 +228,50 @@ package engine.clib
 			ShowMessage(lines, true);
 		}
 		
-		static public function ShowChoice(message:String):void
+		static public function ShowChoice(message:String):int
 		{
-			
+			throw new Error("this function is deprecated - use MultipleChoiceBox class instead");
+			return 0;
 		}
 		
-		static public function ShowChoiceEx(message:String, ...options):void
+		static public function ShowChoiceEx(message:String, ...options):int
 		{
-			
+			throw new Error("this function is deprecated - use MultipleChoiceBox class instead");
+			return 0;
 		}
 		
-		static public function DrawButton(x:int, y:int, width:int, height:int, caption:String, backColor:uint, foreColor:uint):void
+		static public function DrawButton(x:int, y:int, width:int, height:int, caption:String, backColor:int, foreColor:int):void
 		{
+			SetBackgroundColor(backColor);
+			SetForegroundColor(foreColor);
 			
+			var cx:int, cy:int;
+			
+			for (cy = 1; cy < height - 1; cy++)
+			{
+				for (cx = 1; cx < width - 1; cx++)
+				{
+					OutChar(x + cx, y + cy, " ");
+				}
+			}
+			
+			for (cx = 0; cx < width; cx++)
+			{
+				OutChar(x + cx, y, String.fromCharCode(205));
+				OutChar(x + cx, y + (height - 1), String.fromCharCode(205));
+			}
+			
+			for (cy = 0; cy < height; cy++)
+			{
+				OutChar(x, y + cy, String.fromCharCode(186));
+				OutChar(x + (width - 1), y + cy, String.fromCharCode(186));
+			}
+			
+			OutChar(x, y, String.fromCharCode(201));
+			OutChar(x, y + (height - 1), String.fromCharCode(200));
+			OutChar(x + (width - 1), y, String.fromCharCode(187));
+			OutChar(x + (width - 1), y + (height - 1), String.fromCharCode(188));
+			OutChars(x + 2, y + 1, caption);
 		}
 		
 	}
